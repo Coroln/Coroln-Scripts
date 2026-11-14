@@ -1,0 +1,23 @@
+local s,id=GetID()
+function s.initial_effect(c)
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_REMOVE)
+	e1:SetType(EFFECT_TYPE_ACTIVATE)
+	e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetOperation(s.tgop)
+	c:RegisterEffect(e1)
+end
+s.listed_names={84916669,99414168}
+function s.tgop(e,tp,eg,ep,ev,re,r,rp)
+		local token=Duel.CreateToken(tp,84916669)
+		Duel.Remove(token,POS_FACEUP,REASON_EFFECT)
+	local c=e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+		e1:SetType(EFFECT_TYPE_FIELD)
+		e1:SetCode(EFFECT_IMMUNE_EFFECT)
+		e1:SetValue(function(e,te) return te:GetOwnerPlayer()~=e:GetHandlerPlayer() and te:IsActivated() end)
+		e1:SetTargetRange(LOCATION_MZONE|LOCATION_REMOVED,0)
+		e1:SetTarget(function(e,c) return (c:IsCode(99414168) or c:IsCode(84916669)) end)
+		Duel.RegisterEffect(e1,tp)
+end
